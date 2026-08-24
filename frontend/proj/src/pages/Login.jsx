@@ -42,7 +42,7 @@ const Login = () => {
       navigate("/report-problem");
     } catch (error) {
       console.error(error);
-      setError("Server se connect nahi ho pa raha.");
+      setError("not connected server");
     }
   };
 
