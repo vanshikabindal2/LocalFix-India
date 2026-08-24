@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import problemCategories from "../data/problemCategories";
+import problemCategories from "../data/problemCategories.jsx";
 import { getDepartmentByCategory } from "../utlis/DepartmentUtils";
 import { createComplaint } from "../api/complaintApi";
 
