@@ -1,0 +1,411 @@
+/* =========================
+   Main Page
+========================= */
+
+.area-alert-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #eef2ff,
+    #f8fafc
+  );
+
+  animation: pageFade 0.7s ease;
+}
+
+
+/* =========================
+   Container
+========================= */
+
+.area-alert-container {
+  width: 100%;
+  max-width: 720px;
+
+  background: #ffffff;
+
+  padding: 35px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.08);
+
+  animation: slideUp 0.7s ease;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+.alert-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 30px;
+
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.alert-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 15px;
+
+  background: #fff1f2;
+
+  font-size: 28px;
+
+  animation: pulseAlert 2s infinite;
+}
+
+.alert-header h1 {
+  margin: 0;
+
+  font-size: 28px;
+
+  color: #111827;
+
+  font-weight: 700;
+}
+
+.alert-header p {
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* =========================
+   Form
+========================= */
+
+.area-alert-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+
+/* =========================
+   Form Group
+========================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  animation: fadeIn 0.6s ease;
+}
+
+.form-group label {
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+
+/* =========================
+   Inputs
+========================= */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  color: #111827;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+
+/* Focus Effect */
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 110px;
+}
+
+
+/* =========================
+   Location Row
+========================= */
+
+.location-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+
+/* =========================
+   Button
+========================= */
+
+.create-alert-btn {
+  margin-top: 8px;
+
+  width: 100%;
+
+  padding: 14px 20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.3s ease;
+}
+
+
+/* Hover */
+
+.create-alert-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 22px rgba(220, 38, 38, 0.25);
+}
+
+
+/* Click */
+
+.create-alert-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+/* Disabled */
+
+.create-alert-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   Animations
+========================= */
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes pulseAlert {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 768px) {
+
+  .area-alert-page {
+    padding: 30px 15px;
+  }
+
+  .area-alert-container {
+    padding: 28px;
+  }
+
+  .alert-header h1 {
+    font-size: 24px;
+  }
+
+  .location-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 480px) {
+
+  .area-alert-page {
+    padding: 20px 12px;
+  }
+
+  .area-alert-container {
+    padding: 22px 18px;
+
+    border-radius: 16px;
+  }
+
+  .alert-header {
+    gap: 12px;
+
+    margin-bottom: 25px;
+  }
+
+  .alert-icon {
+    width: 45px;
+    height: 45px;
+
+    font-size: 22px;
+
+    border-radius: 12px;
+  }
+
+  .alert-header h1 {
+    font-size: 20px;
+  }
+
+  .alert-header p {
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+  .area-alert-form {
+    gap: 17px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 12px;
+
+    font-size: 13px;
+  }
+
+  .create-alert-btn {
+    padding: 13px;
+
+    font-size: 14px;
+  }
+}
