@@ -3,7 +3,7 @@ const multer = require("multer");
 
 const router = express.Router();
 
-const { analyzeImage } = require("../controllers/AIController");
+const { analyzeImage } = require("../Controllers/AIController");
 
 const upload = multer({
   storage: multer.memoryStorage(),
