@@ -13,8 +13,8 @@ console.log(
   process.env.EMAIL_PASS ? "LOADED ✅" : "MISSING ❌"
 );
 const aiRoutes = require("./Routes/AIRoutes");
-const complaintRoutes = require("./routes/ComplaintRoutes");
-const authRoutes = require("./routes/AuthRoutes");
+const complaintRoutes = require("./Routes/ComplaintRoutes");
+const authRoutes = require("./Routes/AuthRoutes");
 const alertAlertRoutes=require("./Routes/AreaAlertRoutes")
 const app = express();
 
