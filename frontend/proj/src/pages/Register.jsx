@@ -85,7 +85,7 @@ const Register = () => {
       );
 
       setError(
-        "Server se connect nahi ho pa raha."
+        "not connected server."
       );
 
     } finally {
