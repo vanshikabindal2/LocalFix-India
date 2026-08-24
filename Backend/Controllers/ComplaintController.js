@@ -1,6 +1,6 @@
 const generateOTP = require("../utils/otpGenerator");
 
-const Complaint = require("../models/Complaint");
+const Complaint = require("../models/complaint");
 
 // =====================================================
 // CREATE COMPLAINT
