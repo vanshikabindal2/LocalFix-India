@@ -24,7 +24,7 @@ function AdminAreaAlert(){
         e.preventDefault();
         try{
             setLoading(true);
-            const response=await axios.post(" http://localhost:5001/api/area-alerts",{
+            const response=await axios.post(" https://local-fix-india-backend.vercel.app/api/area-alerts",{
                 ...formData,
                 latitude:Number(formData.latitude),
                 longitude:Number(formData.longitude),

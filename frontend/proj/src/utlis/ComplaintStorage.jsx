@@ -1,50 +1,7 @@
 
-// const STORAGE_KEY = "localfix_complaints";
-// export const getComplaints = () => {
-//   const data =localStorage.getItem(STORAGE_KEY);
-//   return data ? JSON.parse(data): [];
-// };
-
-// export const saveComplaint = (complaint) => {
-//   const complaints = getComplaints();
-//   complaints.push(complaint);
-//   localStorage.setItem(
-//     STORAGE_KEY,
-//     JSON.stringify(complaints)
-//   );
-// };
 
 
-// export const getComplaintById = (id) => {
-//   const complaints = getComplaints();
-//   return complaints.find(
-//     (complaint) =>
-//       String(complaint.id) === String(id)
-//   );
-// };
-
-// // update status
-
-// export const updateComplaintStatus=(id,newStatus)=>{
-//   const complaints=getComplaints();
-//   const updateComplaints=complaints.map((complaint)=>{
-//     if(String(complaint.id)===String(id)){
-//       return{
-//         ...complaint,status:newStatus,
-//       };
-//     };
-//       return complaint;
-//     }
-//   );
-//   localStorage.setItem(STORAGE_KEY,JSON.stringify(updateComplaints));
-// return updateComplaints;
- 
-
-
-// };
-
-
-const API_URL = "http://localhost:5001/api/complaints";
+const API_URL = "https://local-fix-india-backend.vercel.app/api/complaints";
 
 // ==========================================
 // GET ALL COMPLAINTS

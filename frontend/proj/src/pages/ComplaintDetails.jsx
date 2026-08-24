@@ -32,7 +32,7 @@ const ComplaintDetails = () => {
       setError("");
 
       const response = await fetch(
-        `http://localhost:5001/api/complaints/${id}`
+        `https://local-fix-india-backend.vercel.app/api/complaints/${id}`
       );
 
       const data = await response.json();
@@ -115,7 +115,7 @@ const ComplaintDetails = () => {
       setSubmitting(true);
 
       const response = await fetch(
-        `http://localhost:5001/api/complaints/${id}/verify-resolution`,
+        `https://local-fix-india-backend.vercel.app/api/complaints/${id}/verify-resolution`,
         {
           method: "POST",
 

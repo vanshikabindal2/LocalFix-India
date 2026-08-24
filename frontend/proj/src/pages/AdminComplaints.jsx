@@ -15,7 +15,7 @@ const AdminComplaints = () => {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5001/api/complaints"
+        "https://local-fix-india-backend.vercel.app/api/complaints"
       );
 
       const data = await response.json();
@@ -51,7 +51,7 @@ const AdminComplaints = () => {
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/complaints/${id}/status`,
+        `https://local-fix-india-backend.vercel.app/api/complaints/${id}/status`,
         {
           method: "PUT",
 

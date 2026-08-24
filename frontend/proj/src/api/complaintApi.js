@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5001/api",
+  baseURL: "https://local-fix-india-backend.vercel.app/api",
 });
 
 export const createComplaint = async (complaintData) => {

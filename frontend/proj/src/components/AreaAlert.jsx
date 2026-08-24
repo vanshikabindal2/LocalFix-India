@@ -9,7 +9,7 @@ function AreaAlert() {
     const fetchAlerts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/area-alerts"
+          "https://local-fix-india-backend.vercel.app/api/area-alerts"
         );
 
         console.log("Area Alerts:", response.data);

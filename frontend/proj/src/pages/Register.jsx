@@ -36,7 +36,7 @@ const Register = () => {
 
       // Send OTP request
       const response = await fetch(
-        "http://localhost:5001/api/auth/send-otp",
+        "https://local-fix-india-backend.vercel.app/api/auth/send-otp",
         {
           method: "POST",
 

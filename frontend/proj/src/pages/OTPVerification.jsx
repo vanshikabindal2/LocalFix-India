@@ -1,116 +1,4 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 
-// const OTPVerification = () => {
-//   const navigate = useNavigate();
-
-//   const [otp, setOtp] = useState("");
-//   const [error, setError] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   const email = sessionStorage.getItem("registrationEmail");
-
-//   const handleVerifyOTP = async (e) => {
-//     e.preventDefault();
-
-//     setError("");
-
-//     if (otp.length !== 6) {
-//       setError("Please enter 6 digit OTP");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       const response = await fetch(
-//         "http://localhost:5001/api/auth/verify-otp",
-//         {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             email,
-//             otp,
-//           }),
-//         }
-//       );
-
-//       const data = await response.json();
-
-//       if (!response.ok) {
-//         setError(data.message || "Invalid OTP");
-//         return;
-//       }
-
-//       alert("Registration successful!");
-
-//       sessionStorage.removeItem("registrationEmail");
-
-//       navigate("/login");
-
-//     } catch (error) {
-//       console.error(error);
-//       setError("Server se connect nahi ho pa raha.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="login-page">
-//       <div className="login-card">
-
-//         <h1>Verify OTP</h1>
-
-//         <p>
-//           OTP has been sent to:
-//         </p>
-
-//         <strong>{email}</strong>
-
-//         {error && (
-//           <div className="login-error">
-//             {error}
-//           </div>
-//         )}
-
-//         <form onSubmit={handleVerifyOTP}>
-
-//           <div className="form-group">
-//             <label>Enter OTP</label>
-
-//             <input
-//               type="text"
-//               placeholder="Enter 6 digit OTP"
-//               maxLength="6"
-//               value={otp}
-//               onChange={(e) =>
-//                 setOtp(
-//                   e.target.value.replace(/\D/g, "")
-//                 )
-//               }
-//               required
-//             />
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="login-btn"
-//             disabled={loading}
-//           >
-//             {loading ? "Verifying..." : "Verify OTP"}
-//           </button>
-
-//         </form>
-
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default OTPVerification;
 
 
 import React, { useState } from "react";
@@ -146,7 +34,7 @@ const OTPVerification = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5001/api/auth/verify-otp",
+        "https://local-fix-india-backend.vercel.app/api/auth/verify-otp",
         {
           method: "POST",
 

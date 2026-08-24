@@ -33,7 +33,7 @@ const AiLocalAssistant = ({ onAnalysis }) => {
       formData.append("image", image);
 
       const response = await axios.post(
-        "http://localhost:5001/api/ai/analyze-image",
+        "https://local-fix-india-backend.vercel.app/api/ai/analyze-image",
         formData
       );
 
