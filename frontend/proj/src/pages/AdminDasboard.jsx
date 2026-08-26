@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getComplaints } from "../api/complaintApi.js";
-import { useNavigate,Link } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 const AdminDashboard = () => {
   const navigate=useNavigate();
   const [complaints, setComplaints] = useState([]);
@@ -75,16 +75,23 @@ setComplaints(data.complaints || []);
 <div className="admin-actions">
   <button onClick={()=>navigate("/admin/complaints")}>Manage Complaints</button>
 <Link to="/admin/area-alerts" className="admin-area-alert-btn">🚨Area Alert</Link>
-  <button onClick={()=>navigate("/")}>Home</button>
+  {/* <button onClick={()=>navigate("/")}>Home</button> */}
 
 </div>
 
 
-          <button onClick={()=>{
+          {/* <button onClick={()=>{
             localStorage.removeItem("admin LoggedIn");
             navigate("/admin-login");
-          }}>Logout</button>
+          }}>Logout</button> */}
           
+<button onClick={() => {
+  localStorage.removeItem("adminLoggedIn");
+  navigate("/admin-login", { replace: true });
+}}>
+  Logout
+</button>
+
           <p>LOCALFIX INDIA - Complaint Management</p>
         </div>
 

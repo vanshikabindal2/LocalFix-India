@@ -1,8 +1,8 @@
 
 
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const OTPVerification = () => {
   const navigate = useNavigate();
@@ -11,20 +11,36 @@ const OTPVerification = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const email = sessionStorage.getItem("registrationEmail");
+  const name = sessionStorage.getItem("registrationName");
+  const phone = sessionStorage.getItem("registrationPhone");
+  const password = sessionStorage.getItem("registrationPassword");
+
+  // =====================================================
+  // VERIFY FIREBASE OTP
+  // =====================================================
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    // Email check
-    if (!email) {
-      setError("Registration session expired. Please register again.");
+    // Check registration data
+    if (!name || !phone || !password) {
+      setError(
+        "Registration session expired. Please register again."
+      );
       return;
     }
 
-    // OTP check
+    // Check Firebase confirmation result
+    if (!window.confirmationResult) {
+      setError(
+        "OTP session expired. Please register again."
+      );
+      return;
+    }
+
+    // OTP validation
     if (otp.length !== 6) {
       setError("Please enter a valid 6 digit OTP.");
       return;
@@ -33,45 +49,91 @@ const OTPVerification = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "https://local-fix-india-backend.vercel.app/api/auth/verify-otp",
+      console.log("Verifying Firebase OTP...");
+
+      // =================================================
+      // STEP 1: VERIFY OTP WITH FIREBASE
+      // =================================================
+
+      const result =
+        await window.confirmationResult.confirm(otp);
+
+      console.log(
+        "Firebase phone verification successful:",
+        result.user.phoneNumber
+      );
+
+      // =================================================
+      // STEP 2: CREATE USER IN MONGODB
+      // =================================================
+
+      const response = await axios.post(
+        "https://local-fix-india-backend.vercel.app/api/auth/register",
         {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            email: email,
-            otp: otp,
-          }),
+          name: name,
+          phone: `+91${phone}`,
+          password: password,
         }
       );
 
-      const data = await response.json();
+      // =================================================
+      // STEP 3: SUCCESS
+      // =================================================
 
-      if (!response.ok) {
-        setError(data.message || "Invalid OTP.");
-        return;
+      if (response.data.success) {
+        alert("Registration successful! 🎉");
+
+        // Clear temporary registration data
+        sessionStorage.removeItem(
+          "registrationName"
+        );
+
+        sessionStorage.removeItem(
+          "registrationPhone"
+        );
+
+        sessionStorage.removeItem(
+          "registrationPassword"
+        );
+
+        // Clear Firebase confirmation result
+        window.confirmationResult = null;
+
+        // Go to login
+        navigate("/login");
       }
-
-      // Registration successful
-      alert("Registration successful! 🎉");
-
-      // Remove temporary email
-      sessionStorage.removeItem("registrationEmail");
-
-      // Go to login
-      navigate("/login");
-
     } catch (error) {
-      console.error("OTP Verification Error:", error);
-
-      setError(
-        "Server se connect nahi ho pa raha. Please try again."
+      console.error(
+        "OTP Verification Error:",
+        error
       );
 
+      // Firebase errors
+      if (
+        error.code ===
+        "auth/invalid-verification-code"
+      ) {
+        setError(
+          "Invalid OTP. Please enter the correct OTP."
+        );
+      } else if (
+        error.code === "auth/code-expired"
+      ) {
+        setError(
+          "OTP has expired. Please register again."
+        );
+      } else if (
+        error.response?.data?.message
+      ) {
+        // Backend error
+        setError(
+          error.response.data.message
+        );
+      } else {
+        setError(
+          "OTP verification failed. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -94,9 +156,9 @@ const OTPVerification = () => {
           We have sent a 6-digit verification code to
         </p>
 
-        {/* Email */}
+        {/* Phone */}
         <div className="otp-email">
-          {email || "Email not found"}
+          +91 {phone || "Phone number not found"}
         </div>
 
         {/* Error */}
@@ -123,7 +185,10 @@ const OTPVerification = () => {
               value={otp}
               onChange={(e) => {
                 const value =
-                  e.target.value.replace(/\D/g, "");
+                  e.target.value.replace(
+                    /\D/g,
+                    ""
+                  );
 
                 setOtp(value);
               }}
@@ -132,7 +197,8 @@ const OTPVerification = () => {
             />
 
             <small>
-              Enter the 6-digit code sent to your email
+              Enter the 6-digit code sent to
+              your phone
             </small>
 
           </div>
@@ -154,12 +220,14 @@ const OTPVerification = () => {
         <div className="otp-footer">
 
           <span>
-            Wrong email?
+            Wrong phone number?
           </span>
 
           <button
             type="button"
-            onClick={() => navigate("/register")}
+            onClick={() =>
+              navigate("/register")
+            }
           >
             Register Again
           </button>

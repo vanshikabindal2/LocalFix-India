@@ -37,7 +37,7 @@ function AppContent() {
     location.pathname === "/verify-otp" ||
     location.pathname === "/admin-login" ||
     location.pathname === "/admin" ||
-    location.pathname === "/admin/complaints";
+    location.pathname === "/admin/complaints" ||
     location.pathname === "/admin/area-alerts";
 
   return (
@@ -71,6 +71,15 @@ function AppContent() {
             <Link to="/my-complaints">
               My Complaints
             </Link>
+
+
+
+             <Link to="/login">
+              Logout
+            </Link>
+
+
+
 
           
 

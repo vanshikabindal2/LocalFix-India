@@ -8405,3 +8405,33 @@ button {
   margin: 0 8px;
   transition: 0.2s ease;
 }
+
+
+
+
+
+
+
+.citizen-login {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.citizen-login p {
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.citizen-login-btn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.citizen-login-btn:hover {
+  text-decoration: underline;
+}

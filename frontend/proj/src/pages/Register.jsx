@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+
+
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+
+  // =====================================================
+  // STATES
+  // =====================================================
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,30 +19,82 @@ const Register = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const googleButtonRef = useRef(null);
+
+  // =====================================================
+  // GOOGLE SCRIPT
+  // =====================================================
+
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+      if (
+        window.google &&
+        googleButtonRef.current
+      ) {
+        window.google.accounts.id.initialize({
+          client_id:
+            import.meta.env.VITE_GOOGLE_CLIENT_ID,
+
+          callback: handleGoogleResponse,
+        });
+
+        window.google.accounts.id.renderButton(
+          googleButtonRef.current,
+          {
+            theme: "outline",
+            size: "large",
+            width: 350,
+            text: "continue_with",
+            shape: "rectangular",
+          }
+        );
+      }
+    };
+
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
+  // =====================================================
+  // NORMAL REGISTER
+  // =====================================================
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
 
-    // Password match check
+    // Password match
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    // Password length check
+    // Password length
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(
+        "Password must be at least 6 characters"
+      );
       return;
     }
 
     try {
       setLoading(true);
 
-      // Send OTP request
       const response = await fetch(
-        "https://local-fix-india-backend.vercel.app/api/auth/send-otp",
+        "https://local-fix-india-backend.vercel.app/api/auth/register",
         {
           method: "POST",
 
@@ -45,8 +103,8 @@ const Register = () => {
           },
 
           body: JSON.stringify({
-            name,
-            email,
+            name: name.trim(),
+            email: email.trim(),
             password,
           }),
         }
@@ -57,25 +115,26 @@ const Register = () => {
       // Backend error
       if (!response.ok) {
         setError(
-          data.message || "Unable to send OTP"
+          data.message || "Registration failed"
         );
         return;
       }
 
-      // Save email temporarily
-      sessionStorage.setItem(
-        "registrationEmail",
-        email
-      );
+      // Save user
+      if (data.user) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.user)
+        );
+      }
 
-      // Success message
       setSuccess(
-        "OTP sent successfully! Check your email."
+        "Registration successful!"
       );
 
-      // Go to OTP verification page
+      // Go to Login
       setTimeout(() => {
-        navigate("/verify-otp");
+        navigate("/login");
       }, 1000);
 
     } catch (error) {
@@ -85,13 +144,103 @@ const Register = () => {
       );
 
       setError(
-        "not connected server."
+        "Not connected to server."
       );
-
     } finally {
       setLoading(false);
     }
   };
+
+  // =====================================================
+  // GOOGLE LOGIN / REGISTER
+  // =====================================================
+
+  const handleGoogleResponse = async (
+    response
+  ) => {
+    try {
+      setError("");
+      setSuccess("");
+      setLoading(true);
+
+      const googleToken =
+        response.credential;
+
+      if (!googleToken) {
+        setError(
+          "Google authentication failed"
+        );
+        return;
+      }
+
+      const result = await fetch(
+        "https://local-fix-india-backend.vercel.app/api/auth/google",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            token: googleToken,
+          }),
+        }
+      );
+
+      const data = await result.json();
+
+      // Backend error
+      if (!result.ok) {
+        setError(
+          data.message ||
+            "Google login failed"
+        );
+        return;
+      }
+
+      // Save JWT
+      if (data.token) {
+        localStorage.setItem(
+          "token",
+          data.token
+        );
+      }
+
+      // Save user
+      if (data.user) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.user)
+        );
+      }
+
+      setSuccess(
+        "Google login successful!"
+      );
+
+      // Go Home
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+
+    } catch (error) {
+      console.error(
+        "Google login error:",
+        error
+      );
+
+      setError(
+        "Google login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <div className="login-page">
@@ -101,11 +250,13 @@ const Register = () => {
         <h1>Create Account</h1>
 
         <p>
-          Register for your LocalFix India account
+          Register for your LocalFix India
+          account
         </p>
 
-
-        {/* Error Message */}
+        {/* =================================================
+            ERROR
+        ================================================= */}
 
         {error && (
           <div className="login-error">
@@ -113,8 +264,9 @@ const Register = () => {
           </div>
         )}
 
-
-        {/* Success Message */}
+        {/* =================================================
+            SUCCESS
+        ================================================= */}
 
         {success && (
           <div className="login-success">
@@ -122,10 +274,13 @@ const Register = () => {
           </div>
         )}
 
+        {/* =================================================
+            NORMAL REGISTER FORM
+        ================================================= */}
 
         <form onSubmit={handleRegister}>
 
-          {/* Name */}
+          {/* NAME */}
 
           <div className="form-group">
 
@@ -143,8 +298,7 @@ const Register = () => {
 
           </div>
 
-
-          {/* Email */}
+          {/* EMAIL */}
 
           <div className="form-group">
 
@@ -162,8 +316,7 @@ const Register = () => {
 
           </div>
 
-
-          {/* Password */}
+          {/* PASSWORD */}
 
           <div className="form-group">
 
@@ -181,12 +334,13 @@ const Register = () => {
 
           </div>
 
-
-          {/* Confirm Password */}
+          {/* CONFIRM PASSWORD */}
 
           <div className="form-group">
 
-            <label>Confirm Password</label>
+            <label>
+              Confirm Password
+            </label>
 
             <input
               type="password"
@@ -202,8 +356,7 @@ const Register = () => {
 
           </div>
 
-
-          {/* Signup Button */}
+          {/* CONTINUE BUTTON */}
 
           <button
             type="submit"
@@ -211,14 +364,41 @@ const Register = () => {
             disabled={loading}
           >
             {loading
-              ? "Sending OTP..."
+              ? "Creating Account..."
               : "Continue"}
           </button>
 
         </form>
 
+        {/* =================================================
+            OR
+        ================================================= */}
 
-        {/* Login */}
+        <div
+          style={{
+            textAlign: "center",
+            margin: "20px 0",
+            color: "#777",
+          }}
+        >
+          OR
+        </div>
+
+        {/* =================================================
+            GOOGLE BUTTON
+        ================================================= */}
+
+        <div
+          ref={googleButtonRef}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        ></div>
+
+        {/* =================================================
+            LOGIN
+        ================================================= */}
 
         <p>
           Already have an account?{" "}
@@ -234,7 +414,6 @@ const Register = () => {
           >
             Login
           </span>
-
         </p>
 
       </div>
