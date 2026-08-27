@@ -8435,3 +8435,58 @@ button {
 .citizen-login-btn:hover {
   text-decoration: underline;
 }
+
+
+
+
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  margin-top: 5px;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.25);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+
+  animation: fadeUp 1s ease;
+
+  /* Important for mobile */
+  box-sizing: border-box;
+}
+
+/* Hover */
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.35);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .login-btn {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+    min-height: 46px;
+    margin-top: 5px;
+    border-radius: 9px;
+  }
+}
